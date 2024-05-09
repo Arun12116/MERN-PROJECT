@@ -6,6 +6,7 @@ import AddProducts from "./Pages/AddProducts";
 import LogOut from "./Pages/LogOut";
 import UpdateProducts from "./Pages/UpdateProducts";
 import PrivateComponent from "./Components/PrivateComponent";
+import Login from "./Components/Login";
 function App() {
   return (
     <>
@@ -17,6 +18,7 @@ function App() {
           <Route path="/Product" element={<Product />} />
         </Route>
         <Route path="/sinup" element={<SinUp />} />
+        <Route path="/Login" element={<Login />} />
       </Routes>
     </>
   );
