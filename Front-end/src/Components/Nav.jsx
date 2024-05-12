@@ -1,8 +1,8 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, json, useNavigate } from "react-router-dom";
 
 const Nav = () => {
-  const user = localStorage.length !== 0;
+  const user = localStorage.getItem("user");
   const navigate = useNavigate();
 
   const logout = () => {
@@ -13,30 +13,28 @@ const Nav = () => {
   return (
     <>
       <div className="w-full  bg-black h-16 text-white">
-        <ul className="flex gap-9 ">
-          <li className="text-center">Home</li>
-          <Link to={"/Product"}>
-            <li>Product</li>
-          </Link>
-
-          <Link to={"/UpdateProduct"}>
-            <li>UpdateProducts</li>
-          </Link>
-
-          <Link to={"AddProducts"}>
-            <li>AddProducts</li>
-          </Link>
-
-          <Link to={"/Profile"}>
-            <li>Profile</li>
-          </Link>
-
-          {user ? (
-            <Link to={"/sinup"}>
-              <li onClick={logout}>LogOut</li>
+        {user ? (
+          <div className="flex gap-5">
+            <li className="text-center">Home</li>
+            <Link to={"/Product"}>
+              <li>Product</li>
             </Link>
-          ) : (
-            <>
+            <Link to={"/UpdateProduct"}>
+              <li>UpdateProducts</li>
+            </Link>
+            <Link to={"/AddProducts"}>
+              <li>AddProducts</li>
+            </Link>
+            <Link to={"/Profile"}>
+              <li>Profile</li>
+            </Link>
+            <Link to={"/sinup"}>
+              <li onClick={logout}>LogOut{JSON.parse(user).name}</li>
+            </Link>
+          </div>
+        ) : (
+          <>
+            <div className="flex">
               <Link to={"/sinup"}>
                 <li>SinUp</li>
               </Link>
@@ -44,9 +42,9 @@ const Nav = () => {
               <Link to={"/Login"}>
                 <li>Login</li>
               </Link>
-            </>
-          )}
-        </ul>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

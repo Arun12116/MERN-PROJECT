@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 require("./db/config");
 const User = require("./db/users");
+const product = require("./db/Product");
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -28,4 +29,26 @@ app.post("/Login", async (req, resp) => {
   }
   resp.send(req.body);
 });
+
+app.post("/addToProduct", async (req, resp) => {
+  let newProduct = new product(req.body);
+
+  let data = await newProduct.save();
+
+  resp.send(data);
+});
+
+
+app.get("/Products", async(req,resp)=>{
+
+let productData= await product.find()
+if(productData.length>0){
+resp.send(productData)
+
+}else{
+  resp.send({result:"no data found"})
+}
+
+
+})
 app.listen(3000);
