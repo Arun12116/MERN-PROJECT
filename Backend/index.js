@@ -37,18 +37,17 @@ app.post("/addToProduct", async (req, resp) => {
 
   resp.send(data);
 });
+app.get("/Products", async (req, resp) => {
+  let productData = await product.find();
+  if (productData.length > 0) {
+    resp.send(productData);
+  } else {
+    resp.send({ result: "no data found" });
+  }
+});
+app.delete("/delete/:id", async (req, resp) => {
+  let result = await product.deleteOne({ _id: req.params.id });
+  resp.send(result);
+});
 
-
-app.get("/Products", async(req,resp)=>{
-
-let productData= await product.find()
-if(productData.length>0){
-resp.send(productData)
-
-}else{
-  resp.send({result:"no data found"})
-}
-
-
-})
 app.listen(3000);
