@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Nav from "../Components/Nav";
+import { Link } from "react-router-dom";
 
 const Product = () => {
   const [product, setProduct] = useState([]);
@@ -47,6 +48,11 @@ const Product = () => {
               >
                 delete
               </span>
+              <br />
+              <Link to={`/UpdateProduct/${items._id}`}>
+              <span>Edit</span>
+              </Link>
+
             </div>
           </>
         );

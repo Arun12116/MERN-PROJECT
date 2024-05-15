@@ -1,13 +1,11 @@
 import React from "react";
-import { Link, json, useNavigate } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 const Nav = () => {
   const user = localStorage.getItem("user");
   const navigate = useNavigate();
 
   const logout = () => {
     localStorage.clear();
-
     navigate("/sinup");
   };
   return (
@@ -38,7 +36,6 @@ const Nav = () => {
               <Link to={"/sinup"}>
                 <li>SinUp</li>
               </Link>
-
               <Link to={"/Login"}>
                 <li>Login</li>
               </Link>

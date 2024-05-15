@@ -13,8 +13,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route element={<PrivateComponent />}>
-          <Route path="/AddProducts" element={<AddProducts/>} />
-          <Route path="/UpdateProduct" element={<UpdateProducts />} />
+          <Route path="/AddProducts" element={<AddProducts />} />
+          <Route path="/UpdateProduct/:id" element={<UpdateProducts />} />
           <Route path="/Product" element={<Product />} />
         </Route>
         <Route path="/sinup" element={<SinUp />} />
