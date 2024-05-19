@@ -2,21 +2,30 @@ const express = require("express");
 const cors = require("cors");
 require("./db/config");
 const User = require("./db/users");
-const product = require("./db/Product");
+const Product = require("./db/Product");
+
 const app = express();
 app.use(cors());
 app.use(express.json());
+
 app.post("/users", async (req, resp) => {
   const user = new User(req.body);
   const result = await user.save();
-  //dont show the userPassword in the response start
-  const removePassword = result.toObject();
-  delete removePassword.password;
-  //end
-  resp.send(removePassword);
+  const responseData = { ...result.toObject(), password: undefined };
+  resp.send(responseData);
 });
 
-app.post("/Login", async (req, resp) => {
+// app.post("/users", async (req, resp) => {
+//   const user = new User(req.body);
+//   const result = await user.save();
+//   //dont show the userPassword in the response start
+//   const removePassword = result.toObject();
+//   delete removePassword.password;
+//   //end
+//   resp.send(removePassword);
+// });
+
+app.post("/login", async (req, resp) => {
   if (req.body.password && req.body.email) {
     let user = await User.findOne(req.body).select("-password");
     if (user) {
@@ -27,35 +36,61 @@ app.post("/Login", async (req, resp) => {
   } else {
     resp.send({ result: "no user found" });
   }
-  resp.send(req.body);
 });
 
 app.post("/addToProduct", async (req, resp) => {
-  let newProduct = new product(req.body);
-
+  let newProduct = new Product(req.body);
   let data = await newProduct.save();
-
   resp.send(data);
 });
-app.get("/Products", async (req, resp) => {
-  let productData = await product.find();
+
+app.get("/products", async (req, resp) => {
+  let productData = await Product.find();
   if (productData.length > 0) {
     resp.send(productData);
   } else {
     resp.send({ result: "no data found" });
   }
 });
+
 app.delete("/delete/:id", async (req, resp) => {
-  let result = await product.deleteOne({ _id: req.params.id });
+  let result = await Product.deleteOne({ _id: req.params.id });
   resp.send(result);
 });
 
 app.get("/product/:id", async (req, resp) => {
-  let result = await product.findOne({ _id: req.params.id });
+  let result = await Product.findOne({ _id: req.params.id });
   if (result) {
     resp.send(result);
   } else {
     resp.send({ message: "no data found" });
   }
 });
-app.listen(3000);
+
+app.put("/update/:id", async (req, resp) => {
+  let result = await Product.updateOne(
+    { _id: req.params.id },
+    { $set: req.body }
+  );
+  resp.send(result);
+});
+
+app.get("/search/:key", async (req, resp) => {
+
+  console.log("result",req.params.key);
+  let result = await Product.find({
+   "$or": [
+
+    { productName: { $regex: req.params.key } },
+    { category: { $regex: req.params.key } }
+
+
+  ],
+  });
+
+  resp.send(result)
+});
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});

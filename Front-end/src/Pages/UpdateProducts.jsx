@@ -1,33 +1,47 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Nav from "../Components/Nav";
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
 const UpdateProducts = () => {
   const [productName, setProductName] = useState("");
   const [price, setPrice] = useState("");
-  const [category, setCatogery] = useState("");
+  const [category, setCategory] = useState("");
 
-  const parms = useParams();
-  console.log(parms);
+  const params = useParams();
+
+  const navigate = useNavigate();
+  console.log(params);
 
   const getData = async () => {
-    let response = await fetch(
-      "http://localhost:3000/product/663f53601f95a07fb216adf8",
-      {
-        method: "get",
-      }
-    );
+    let response = await fetch(`http://localhost:3000/product/${params.id}`, {
+      method: "GET",
+    });
     response = await response.json();
     console.log("response", response);
     setPrice(response.price);
-    setCatogery(response.category);
+    setCategory(response.category);
     setProductName(response.productName);
   };
 
   useEffect(() => {
     getData();
   }, []);
-  const handleAddtocart = () => {};
+
+  const handleUpdateProduct = async () => {
+    const response = await fetch(`http://localhost:3000/update/${params.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ price, productName, category }),
+    });
+
+    const result = await response.json();
+    console.log(result, "update response");
+
+    navigate("/Product");
+  };
+
   return (
     <>
       <Nav />
@@ -47,7 +61,7 @@ const UpdateProducts = () => {
             </label>
           </div>
           <div className="mt-4">
-            <label htmlFor="email" className="block">
+            <label htmlFor="price" className="block">
               Enter your Price:
               <input
                 id="price"
@@ -60,21 +74,24 @@ const UpdateProducts = () => {
             </label>
           </div>
           <div className="mt-4">
-            <label className="block">
-              Enter your catogery
+            <label htmlFor="category" className="block">
+              Enter your category:
               <input
-                id="catogery"
+                id="category"
                 type="text"
                 className="mt-1 p-2"
-                placeholder="Enter your catogery"
-                onChange={(e) => setCatogery(e.target.value)}
+                placeholder="Enter your category"
+                onChange={(e) => setCategory(e.target.value)}
                 value={category}
               />
             </label>
           </div>
           <div className="mt-4">
-            <button onClick={handleAddtocart} className="border-2 h-10 w-24">
-              updateProduct
+            <button
+              onClick={handleUpdateProduct}
+              className="border-2 h-10 w-24"
+            >
+              Update Product
             </button>
           </div>
         </div>
