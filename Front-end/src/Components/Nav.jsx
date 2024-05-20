@@ -23,7 +23,7 @@ const Nav = () => {
             <Link to={"/AddProducts"}>
               <li className="text-center mt-4">AddProducts</li>
             </Link>
-            <Link to={"/Profile"}>
+            <Link>
               <li className="text-center mt-4">Profile</li>
             </Link>
             <Link to={"/sinup"}>

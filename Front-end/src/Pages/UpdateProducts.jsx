@@ -6,7 +6,6 @@ const UpdateProducts = () => {
   const [productName, setProductName] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
-
   const params = useParams();
 
   const navigate = useNavigate();
@@ -25,7 +24,7 @@ const UpdateProducts = () => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   const handleUpdateProduct = async () => {
     const response = await fetch(`http://localhost:3000/update/${params.id}`, {
