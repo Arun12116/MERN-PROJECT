@@ -26,7 +26,6 @@ const personSchema = new mongoose.Schema({
   },
   address: {
     type: String,
-
   },
   salary: {
     type: String,
@@ -36,4 +35,3 @@ const personSchema = new mongoose.Schema({
 
 const Person = mongoose.model("Person", personSchema);
 module.exports = Person;
-
